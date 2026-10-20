@@ -21,8 +21,8 @@ les pièges rencontrés en chemin.
 |---|---|
 | **Le modèle est solide…** | log-loss **0,978** contre **0,992** pour Dixon-Coles et **1,074** pour une prédiction constante |
 | **…mais le marché fait mieux** | cotes d'ouverture **0,970**, de clôture **0,968** ; le modèle est significativement moins bon (+0,009, IC 95 % [+0,004 ; +0,014]) |
-| **Il n'apporte rien au marché** | poids appris sur la période de réglage : **0,01** pour le modèle contre 1,02 pour les cotes ; le mélange égale le marché |
-| **Pas d'avantage pour parier** | valeur de clôture (CLV) négative (−2 % à −8 %) et rendements négatifs à tous les seuils |
+| **Il n'apporte rien au marché** | poids appris sur la période de réglage : **0,06** pour le modèle contre 0,98 pour les cotes ; le mélange égale le marché (−0,0002, IC 95 % [−0,0007 ; +0,0003]) |
+| **Pas d'avantage pour parier** | le modèle seul a une valeur de clôture (CLV) négative (−2 % à −9 %) et des rendements négatifs à tous les seuils |
 | **Les compositions comptent peu** | connaître le onze de départ n'améliore la log-loss que de 0,001 (non significatif) |
 | **Ce qui contient du signal** | tactique et style (formations, pressing, coups de pied arrêtés), contexte (enjeu, Coupes d'Europe, changements d'entraîneur), xG à score égal, qualité offensive du onze, automatismes |
 | **Biais du marché** | un net **biais favori-outsider** : les issues cotées sous 10 % n'arrivent que 6 % du temps (−24 % de rendement), les favoris ne perdent que 1 à 3 % |
@@ -55,13 +55,23 @@ les pièges rencontrés en chemin.
 |---|---|---|---|
 | Constante (fréquences) | — | 1,0740 | 0,6500 |
 | Dixon-Coles, buts seuls | buts passés | 0,9923 | 0,5913 |
-| LightGBM, 164 variables | avant compositions | 0,9785 | 0,5825 |
-| LightGBM, 220 variables | avec compositions | 0,9774 | 0,5819 |
-| LightGBM + cotes d'ouverture en variables | avant compositions | 0,9709 | 0,5774 |
+| LightGBM, 164 variables | avant compositions | 0,9784 | 0,5825 |
+| LightGBM, 220 variables | avec compositions | 0,9774 | 0,5818 |
+| LightGBM + cotes d'ouverture en variables | avant compositions | 0,9705 | 0,5771 |
 | Bookmakers, ouverture | avant compositions | 0,9698 | 0,5770 |
-| Mélange modèle ⊕ marché d'ouverture | avant compositions | 0,9697 | 0,5770 |
+| Mélange modèle ⊕ marché d'ouverture | avant compositions | 0,9696 | 0,5769 |
 | Bookmakers, clôture | avec compositions | 0,9677 | 0,5756 |
 | Mélange modèle ⊕ marché de clôture | avec compositions | 0,9675 | 0,5755 |
+
+### Une piste exploratoire — pas un résultat
+
+Une règle de pari se distingue : le mélange modèle ⊕ marché, en pariant à la **meilleure cote
+d'ouverture disponible** quand elle dépasse la cote juste du mélange de 2 %, donne +9,2 % de
+rendement (IC 95 % [+1,6 % ; +17,1 %]) et +2,6 % de CLV sur 622 paris. Je n'en tire **pas**
+d'avantage : des dizaines de règles ont été testées (une ou deux doivent paraître significatives
+par hasard), la « meilleure cote » inclut probablement Betfair Exchange dont la commission n'est
+pas modélisée, et le poids du modèle dans le mélange est minime. C'est la première chose qu'un
+test « à blanc » sur des matchs futurs devra vérifier.
 
 ### Quelles statistiques comptent ?
 

@@ -21,8 +21,8 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 |---|---|
 | **The model is strong…** | log-loss **0.978** vs **0.992** for Dixon-Coles and **1.074** for a constant baseline |
 | **…but the market is stronger** | opening odds **0.970**, closing odds **0.968**; the model is significantly worse (+0.009, 95 % CI [+0.004, +0.014]) |
-| **It adds nothing to the market** | blend weight learned on the tuning period: **0.01** for the model vs 1.02 for the odds; the blend ties the market (−0.0000 ± 0.0005) |
-| **No betting edge** | negative closing-line value (−2 % to −8 %) and negative returns at every threshold |
+| **It adds nothing to the market** | blend weights learned on the tuning period: **0.06** for the model vs 0.98 for the odds; the blend ties the market (−0.0002, 95 % CI [−0.0007, +0.0003]) |
+| **No betting edge** | the model alone has negative closing-line value (−2 % to −9 %) and negative returns at every threshold |
 | **Line-ups barely matter** | knowing the starting XI improves log-loss by only 0.001 (not significant) |
 | **What carries signal** | tactics / style (formations, pressing, set pieces), context (stakes, European fixtures, managerial changes), game-state xG, line-up attacking quality, squad chemistry |
 | **Market biases** | a clear **favourite-longshot bias**: outcomes priced under 10 % happen 6 % of the time (−24 % return), favourites lose only 1–3 % |
@@ -54,13 +54,22 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 |---|---|---|---|
 | Constant (base rates) | — | 1.0740 | 0.6500 |
 | Dixon-Coles, goals only, refit monthly | past goals | 0.9923 | 0.5913 |
-| LightGBM, 164 features | before line-ups | 0.9785 | 0.5825 |
-| LightGBM, 220 features | with line-ups | 0.9774 | 0.5819 |
-| LightGBM + opening odds as features | before line-ups | 0.9709 | 0.5774 |
+| LightGBM, 164 features | before line-ups | 0.9784 | 0.5825 |
+| LightGBM, 220 features | with line-ups | 0.9774 | 0.5818 |
+| LightGBM + opening odds as features | before line-ups | 0.9705 | 0.5771 |
 | Bookmakers, opening | before line-ups | 0.9698 | 0.5770 |
-| Model ⊕ opening market blend | before line-ups | 0.9697 | 0.5770 |
+| Model ⊕ opening market blend | before line-ups | 0.9696 | 0.5769 |
 | Bookmakers, closing | with line-ups | 0.9677 | 0.5756 |
 | Model ⊕ closing market blend | with line-ups | 0.9675 | 0.5755 |
+
+### An exploratory signal — not a result
+
+One betting rule stands out: the model ⊕ market blend, betting at the **best available opening
+price** when it exceeds the blend's fair odds by 2 %, gives +9.2 % return (95 % CI [+1.6 %, +17.1 %])
+and +2.6 % CLV over 622 bets. I do **not** claim an edge from it: dozens of rules were tested (one
+or two are expected to look significant by chance), the "best price" probably includes Betfair
+Exchange prices whose commission is not modelled, and the model's weight in the blend is tiny.
+It is the first thing a forward paper-trading test should check.
 
 ### What kinds of statistics matter?
 
