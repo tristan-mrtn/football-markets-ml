@@ -1,17 +1,17 @@
 # Les données publiques du football peuvent-elles battre les bookmakers ?
 
-**Une étude en évaluation glissante, auditée contre les fuites d'information, sur les 5 grands championnats européens (2021 – 2026)**
+**Une étude en évaluation glissante, auditée contre les fuites d'information, sur les 5 grands championnats européens (2021-2026)**
 
 *English version: [README.md](README.md)*
 
-J'ai construit une chaîne complète — collecte des données, 220 variables conçues à la main,
-modèles de gradient boosting, transformer sur les compositions d'équipe — pour prédire l'issue des
+J'ai construit une chaîne complète (collecte des données, 220 variables conçues à la main,
+modèles de gradient boosting, transformer sur les compositions d'équipe) pour prédire l'issue des
 matchs de football, puis je l'ai évaluée comme on doit évaluer un prévisionniste : **sur environ
 3 800 matchs jamais vus pendant sa conception ni ses réglages, face au marché des paris qui
 disposait exactement de la même information.**
 
-La réponse courte est **non** : le modèle est bon — bien meilleur qu'un modèle Dixon-Coles
-classique — mais le marché l'est davantage, et le modèle n'apporte aucune information que les
+La réponse courte est **non** : le modèle est bon, bien meilleur qu'un modèle Dixon-Coles
+classique, mais le marché l'est davantage, et le modèle n'apporte aucune information que les
 cotes ne contiennent déjà. Les réponses les plus intéressantes portent sur le *pourquoi*, et sur
 les pièges rencontrés en chemin.
 
@@ -36,12 +36,12 @@ les pièges rencontrés en chemin.
   l'ordre chronologique ; les matchs joués à la même heure sont tous calculés avant qu'aucun ne
   mette à jour les historiques.
 * **Évaluation glissante.** Réentraînement tous les 2 mois sur le seul passé ; réglages,
-  calibration et poids des mélanges choisis sur une période distincte (janv. 2023 – juin 2024) ;
-  la période d'évaluation (juil. 2024 – oct. 2026) ne sert à aucune décision.
+  calibration et poids des mélanges choisis sur une période distincte (janv. 2023 à juin 2024) ;
+  la période d'évaluation (juil. 2024 à oct. 2026) ne sert à aucune décision.
 * **Comparaison équitable au marché.** Les modèles sans compositions sont comparés aux cotes
   d'*ouverture*, ceux avec compositions aux cotes de *clôture*.
 * **Audit automatique des fuites** (`make leakage`) : recalculer les variables sur des données
-  tronquées, ou sans un match joué en même temps, ne doit rien changer — c'est le cas sur
+  tronquées, ou sans un match joué en même temps, ne doit rien changer, et c'est le cas sur
   14 080 lignes et 154 857 jetons joueurs.
 * **Chaque comparaison a un intervalle de confiance** (bootstrap apparié sur les matchs).
 * **Les bugs sont documentés, pas cachés.** Cinq bugs de fuite ou de mesure ont été trouvés et
@@ -49,11 +49,11 @@ les pièges rencontrés en chemin.
 
 ## Résultats détaillés
 
-### Qualité des prévisions — période d'évaluation, 3 799 matchs avec cotes complètes
+### Qualité des prévisions : période d'évaluation, 3 799 matchs avec cotes complètes
 
 | Prévisionniste | Information | Log-loss ↓ | Brier ↓ |
 |---|---|---|---|
-| Constante (fréquences) | — | 1,0740 | 0,6500 |
+| Constante (fréquences) | aucune | 1,0740 | 0,6500 |
 | Dixon-Coles, buts seuls | buts passés | 0,9923 | 0,5913 |
 | LightGBM, 164 variables | avant compositions | 0,9784 | 0,5825 |
 | LightGBM, 220 variables | avec compositions | 0,9774 | 0,5818 |
@@ -63,7 +63,7 @@ les pièges rencontrés en chemin.
 | Bookmakers, clôture | avec compositions | 0,9677 | 0,5756 |
 | Mélange modèle ⊕ marché de clôture | avec compositions | 0,9675 | 0,5755 |
 
-### Une piste exploratoire — pas un résultat
+### Une piste exploratoire, pas un résultat
 
 Une règle de pari se distingue : le mélange modèle ⊕ marché, en pariant à la **meilleure cote
 d'ouverture disponible** quand elle dépasse la cote juste du mélange de 2 %, donne +9,2 % de
@@ -100,7 +100,7 @@ git clone https://github.com/tristan-mrtn/football-markets-ml && cd football-mar
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 make test        # 18 tests unitaires, sans données
-make data        # téléchargement des données (~1–2 h, volontairement lent)
+make data        # téléchargement des données (~1-2 h, volontairement lent)
 make features leakage evaluate report market ablation figures
 ```
 

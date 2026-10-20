@@ -1,17 +1,17 @@
 # Can public football data beat the betting market?
 
-**A leakage-audited, walk-forward study of match forecasting in the Big-5 European leagues (2021 – 2026)**
+**A leakage-audited, walk-forward study of match forecasting in the Big-5 European leagues (2021-2026)**
 
 ![python](https://img.shields.io/badge/python-3.10%2B-2a78d6) ![license](https://img.shields.io/badge/license-MIT-2a78d6) ![tests](https://img.shields.io/badge/tests-18%20passing-1baf7a) ![leakage audit](https://img.shields.io/badge/leakage%20audit-passing-1baf7a)
 
 *Version française : [README.fr.md](README.fr.md)*
 
-I built a complete pipeline — data collection, 220 hand-designed features, gradient-boosted
-models, a lineup transformer — to predict football match outcomes, and evaluated it the way a
+I built a complete pipeline (data collection, 220 hand-designed features, gradient-boosted
+models, a lineup transformer) to predict football match outcomes, and evaluated it the way a
 forecaster should be evaluated: **on ~3,800 matches it never saw while being designed or tuned,
 against the betting market that had exactly the same information.**
 
-The short answer is **no**: the model is good — far better than a classic Dixon-Coles model — but
+The short answer is **no**: the model is good, far better than a classic Dixon-Coles model, but
 the market is better still, and the model adds no information the market does not already price.
 The more interesting answers are in *why*, and in the pitfalls found on the way.
 
@@ -25,7 +25,7 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 | **No betting edge** | the model alone has negative closing-line value (−2 % to −9 %) and negative returns at every threshold |
 | **Line-ups barely matter** | knowing the starting XI improves log-loss by only 0.001 (not significant) |
 | **What carries signal** | only **match context** (stakes, European fixtures, rest, managerial changes, squad age) helps significantly on its own (+0.007 log-loss); tactics, line-up attack, chemistry, defence and match stats add ~0.002 each but overlap; form, head-to-head, luck, availability and game-state xG add nothing |
-| **Market biases** | a clear **favourite-longshot bias**: outcomes priced under 10 % happen 6 % of the time (−24 % return), favourites lose only 1–3 % |
+| **Market biases** | a clear **favourite-longshot bias**: outcomes priced under 10 % happen 6 % of the time (−24 % return), favourites lose only 1-3 % |
 | **Methodological trap** | measuring closing-line value with proportional de-vigging shows a spurious **+10.7 %** edge; the power method gives **−0.4 %** |
 
 <p align="center"><img src="docs/figures/market_gap.png" width="820"></p>
@@ -35,12 +35,12 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 * **Strict temporal discipline.** Features are produced by one chronological replay of every
   match; simultaneous kick-offs are written before any of them updates the state.
 * **Walk-forward evaluation.** Refit every two months on the past only; hyper-parameters,
-  calibration and blend weights are chosen on a separate tuning period (Jan 2023 – Jun 2024);
-  the evaluation period (Jul 2024 – Oct 2026) is never used for any decision.
+  calibration and blend weights are chosen on a separate tuning period (Jan 2023 to Jun 2024);
+  the evaluation period (Jul 2024 to Oct 2026) is never used for any decision.
 * **Fair market comparison.** Models without line-ups are compared with *opening* odds, models
-  with line-ups with *closing* odds — never a model with information the market did not have.
+  with line-ups with *closing* odds, so a model never gets information the market did not have.
 * **Automated leakage audit** (`make leakage`): rebuilding features on truncated data or without
-  one simultaneous match must change nothing — it doesn't, over 14,080 rows and 154,857 player
+  one simultaneous match must change nothing, and it doesn't, over 14,080 rows and 154,857 player
   tokens.
 * **Every comparison has a confidence interval** (paired bootstrap over matches).
 * **Bugs are documented, not hidden.** Five leakage or measurement bugs were found and fixed;
@@ -48,11 +48,11 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 
 ## Results
 
-### Forecast quality — evaluation period, 3,799 matches with complete odds
+### Forecast quality: evaluation period, 3,799 matches with complete odds
 
 | Forecaster | Information | Log-loss ↓ | Brier ↓ |
 |---|---|---|---|
-| Constant (base rates) | — | 1.0740 | 0.6500 |
+| Constant (base rates) | none | 1.0740 | 0.6500 |
 | Dixon-Coles, goals only, refit monthly | past goals | 0.9923 | 0.5913 |
 | LightGBM, 164 features | before line-ups | 0.9784 | 0.5825 |
 | LightGBM, 220 features | with line-ups | 0.9774 | 0.5818 |
@@ -62,7 +62,7 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 | Bookmakers, closing | with line-ups | 0.9677 | 0.5756 |
 | Model ⊕ closing market blend | with line-ups | 0.9675 | 0.5755 |
 
-### An exploratory signal — not a result
+### An exploratory signal, not a result
 
 One betting rule stands out: the model ⊕ market blend, betting at the **best available opening
 price** when it exceeds the blend's fair odds by 2 %, gives +9.2 % return (95 % CI [+1.6 %, +17.1 %])
@@ -104,7 +104,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 make test        # 18 unit tests, no data needed (< 5 s)
-make data        # download the raw data (~1–2 h, deliberately rate-limited)
+make data        # download the raw data (~1-2 h, deliberately rate-limited)
 make features    # 220 leakage-free features (~3 min)
 make leakage     # automated leakage audit (~8 min)
 make evaluate    # walk-forward evaluation (~25 min, 2 CPU cores)

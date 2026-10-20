@@ -59,14 +59,14 @@ would "see" the first one's result through league tables or formation statistics
 
 ## 3. Models
 
-* **Dixon-Coles (1997)** — attack/defence Poisson model with low-score correction and time decay,
+* **Dixon-Coles (1997)**: attack/defence Poisson model with low-score correction and time decay,
   refitted every month per league on the previous three seasons. Baseline using goals only.
-* **LightGBM, Poisson objective** — two rows per match (each team attacking the other), predicting
+* **LightGBM, Poisson objective**: two rows per match (each team attacking the other), predicting
   goals; the two expected-goal rates are combined into a score matrix with a Dixon-Coles
   correction ρ fitted on the tuning period, giving home/draw/away probabilities.
   Hyper-parameters: 60-trial random search on the tuning period only; the selected configuration
   is in `results/wf_lgb_best.json`.
-* **Lineup transformer (experimental)** — learned player embeddings + per-player state, two
+* **Lineup transformer (experimental)**: learned player embeddings + per-player state, two
   self-attention layers over the 22 starters. It never beat LightGBM on the tuning period
   (log-loss 0.990 vs 0.979) and is not part of the final evaluation; code kept in
   `footpred/models/transformer.py`.
@@ -95,15 +95,15 @@ A model is only compared with the market that had **the same information**:
 * models **without lineups** → **opening** odds; bets placed at opening prices;
 * models **with lineups** → **closing** odds (the market also knows the line-ups); bets at closing prices.
 
-Comparing a lineup model with opening odds — a mistake made in an earlier version of this
-project — gives the model information the market did not yet have and inflates any "edge".
+Comparing a lineup model with opening odds (a mistake made in an earlier version of this
+project) gives the model information the market did not yet have and inflates any "edge".
 
 **Removing the bookmaker margin.** Implied probabilities are de-vigged with the **power
 method** (find *k* such that Σ (1/oᵢ)ᵏ = 1). The common proportional method spreads the margin
 evenly, whereas bookmakers load more margin on longshots; proportional de-vigging therefore
 overstates longshot probabilities (12.8 % announced vs 10.9 % observed on the bets studied).
 
-**Closing-line value (CLV)** — odds taken divided by the de-vigged closing odds, minus one — is a
+**Closing-line value (CLV)**, the odds taken divided by the de-vigged closing odds minus one, is a
 much lower-variance signal of skill than profit. With proportional de-vigging, a simple
 "outlier bookmaker" strategy shows a spurious **CLV of +10.7 %** while losing money; with the
 power method its CLV is **−0.4 %**, consistent with its returns. This pitfall is easy to fall into.
@@ -116,13 +116,13 @@ blend would beat the market.
 
 `python -m footpred.evaluation.leak_tests data` runs four automated tests:
 
-1. **Truncation** — rebuild all features with every match after time T deleted; the features of
+1. **Truncation**: rebuild all features with every match after time T deleted; the features of
    all earlier matches (and the 154k player tokens) must be identical.
-2. **Removal** — delete one match played at T, where T is a final matchday with ≥ 8 simultaneous
+2. **Removal**: delete one match played at T, where T is a final matchday with ≥ 8 simultaneous
    matches; the features of the other matches at T must not change.
-3. **Correlation** — no feature may correlate above 0.5 with the goals of its own match
+3. **Correlation**: no feature may correlate above 0.5 with the goals of its own match
    (the maximum is the opening-odds feature, ≈ 0.38).
-4. **Closing odds** — no closing-odds column may exist among features.
+4. **Closing odds**: no closing-odds column may exist among features.
 
 ### Bugs found and fixed during the project
 

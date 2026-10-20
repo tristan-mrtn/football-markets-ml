@@ -120,7 +120,7 @@ for a, b in zip(bins, bins[1:]):
         continue
     roi = np.where(w[k], o[k] - 1, -1)
     lo, hi = ci(roi)
-    say(f"  {a:.1f} – {b:.1f}         {k.sum():6d}     {w[k].mean():6.1%}            {p[k].mean():6.1%}"
+    say(f"  {a:.1f}-{b:.1f}           {k.sum():6d}     {w[k].mean():6.1%}            {p[k].mean():6.1%}"
         f"          {roi.mean():+6.1%} [{lo:+.1%} ; {hi:+.1%}]")
     rows.append({"stratégie": f"B tranche {a:.1f}-{b:.1f}", "paris": int(k.sum()), "roi": roi.mean(),
                  "roi_bas": lo, "roi_haut": hi, "freq": w[k].mean(), "proba": p[k].mean()})
