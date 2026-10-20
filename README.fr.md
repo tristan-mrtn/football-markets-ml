@@ -115,3 +115,11 @@ processeur d'un ordinateur portable, sans GPU.
   sur des matchs joués après le gel du modèle, petit modèle de langage lisant l'actualité d'avant-match.
 
 Projet de recherche : rien ici ne constitue un conseil de pari. Code sous [licence MIT](LICENSE).
+
+## Transparence
+
+Ce projet a été développé avec l'aide de **Claude Opus 5.5** (Anthropic) qui, par souci
+d'optimisation, a écrit l'essentiel du code et de la documentation sous ma direction. J'ai défini
+le projet et ses objectifs, proposé les hypothèses footballistiques à tester (blessures,
+automatismes entre joueurs, formations, retour à la moyenne…), exigé le protocole d'évaluation
+rigoureux hors échantillon et la comparaison au marché, et relu les résultats.

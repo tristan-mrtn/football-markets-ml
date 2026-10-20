@@ -145,6 +145,14 @@ results/         all reported numbers (small CSV / TXT files)
 * Next: per-bookmaker analysis with Betfair Exchange as reference, a forward "paper-trading" test
   on matches played after the model was frozen, and a small language model reading pre-match news.
 
+## Transparency
+
+This project was developed with the help of **Claude Opus 5.5** (Anthropic), which, for the sake of
+optimisation, wrote most of the code and documentation under my direction. I defined the project
+and its goals, proposed the football hypotheses to test (injuries, player chemistry, formations,
+mean reversion…), required the rigorous out-of-sample protocol and the market comparison, and
+reviewed the results.
+
 ## Citation
 
 See [CITATION.cff](CITATION.cff). Code released under the [MIT licence](LICENSE).
