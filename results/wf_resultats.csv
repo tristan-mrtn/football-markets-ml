@@ -1,0 +1,11 @@
+modèle,logloss
+Base (fréquences),1.0739578037753126
+Dixon-Coles (buts seuls),0.9923017061519264
+LightGBM sans compositions,0.978530462784119
+LightGBM sans compositions + cotes d'ouverture en variables,0.9709341550685906
+LightGBM avec compositions,0.9773718283924016
+LightGBM avec compositions + cotes d'ouverture en variables,0.9709533283350609
+Mélange sans compositions + marché d'ouverture,0.9697231987944345
+Mélange avec compositions + marché de clôture,0.9674503365241026
+Bookmakers (ouverture),0.9697645736674174
+Bookmakers (clôture),0.9676776655890652

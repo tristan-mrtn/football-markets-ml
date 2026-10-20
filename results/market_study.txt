@@ -1,0 +1,66 @@
+Matchs avec cotes complètes : 9200 (2021-08-06 → 2026-10-12)
+Marge moyenne des bookmakers : ouverture 4.9%, clôture 4.8%
+
+== A. Bookmaker isolé contre consensus ==
+Pari quand la meilleure cote dépasse la cote « juste » du consensus (moyenne, marge retirée) de plus de x %
+  ouverture, écart > 0%                                       8059 paris | ROI  -1.0% [-4.0% ; +1.9%] | CLV +1.1% [+0.9% ; +1.2%]
+  ouverture, écart > 3%                                        522 paris | ROI  -4.7% [-20.2% ; +12.3%] | CLV +6.2% [+5.0% ; +7.4%]
+  ouverture, écart > 5%                                        169 paris | ROI  -1.2% [-28.3% ; +29.2%] | CLV +10.2% [+7.6% ; +13.0%]
+  ouverture, écart > 8%                                         46 paris | ROI +49.4% [-8.5% ; +113.8%] | CLV +22.7% [+15.8% ; +31.5%]
+  ouverture, écart > 12%                                        24 paris (trop peu)
+  clôture, écart > 0%                                        12097 paris | ROI  -0.3% [-3.0% ; +2.5%]
+  clôture, écart > 3%                                         2981 paris | ROI  +2.5% [-3.9% ; +8.8%]
+  clôture, écart > 5%                                         1270 paris | ROI  -1.4% [-11.9% ; +9.9%]
+  clôture, écart > 8%                                          370 paris | ROI  +3.5% [-17.0% ; +26.3%]
+  clôture, écart > 12%                                          98 paris | ROI +21.4% [-20.6% ; +66.9%]
+
+== B. Biais favori-outsider (cotes de clôture, marge retirée au PRORATA pour montrer le biais brut) ==
+  tranche de proba   issues   fréquence réelle   proba annoncée   ROI à la cote moyenne
+  0.0 – 0.1            836       6.0%              7.6%          -24.1% [-44.9% ; -3.0%]
+  0.1 – 0.2           4147      14.3%             15.8%          -14.8% [-21.4% ; -8.2%]
+  0.2 – 0.3          10295      25.5%             25.7%           -5.3% [-8.3% ; -2.0%]
+  0.3 – 0.4           4732      33.6%             34.1%           -6.3% [-10.1% ; -2.4%]
+  0.4 – 0.5           2997      45.5%             44.7%           -2.8% [-6.6% ; +1.1%]
+  0.5 – 0.6           2151      56.4%             54.8%           -1.6% [-5.2% ; +2.0%]
+  0.6 – 0.7           1392      67.5%             64.7%           -0.5% [-4.1% ; +3.2%]
+  0.7 – 0.8            792      76.9%             74.3%           -1.2% [-5.1% ; +2.4%]
+  0.8 – 1.0            258      84.9%             83.8%           -3.2% [-8.4% ; +1.7%]
+
+== C. Biais des grands clubs (pari systématique, cote moyenne de clôture) ==
+  miser sur le grand club                                     2735 paris | ROI  +0.2% [-2.8% ; +3.2%]
+  miser contre le grand club (victoire de l'adversaire)       2735 paris | ROI -14.4% [-22.8% ; -5.6%]
+  miser sur le nul quand un grand club joue                   2735 paris | ROI -14.6% [-21.5% ; -7.7%]
+
+== D. Zones peu suivies : précision des cotes d'ouverture vs clôture ==
+(log-loss du marché ; plus l'écart ouverture − clôture est grand, plus l'ouverture était « fausse »)
+  début de saison (5 premières journées)                   1450 matchs | ouverture 0.9582 clôture 0.9580 | écart +0.0001 [-0.0033 ; +0.0035]
+  reste de la saison                                       7750 matchs | ouverture 0.9721 clôture 0.9696 | écart +0.0025 [+0.0010 ; +0.0040]
+  match avec un promu (moins de 10 matchs dans la ligue)    856 matchs | ouverture 0.9672 clôture 0.9670 | écart +0.0002 [-0.0044 ; +0.0046]
+  fin de saison, une équipe sans enjeu                      441 matchs | ouverture 1.0219 clôture 1.0179 | écart +0.0040 [-0.0057 ; +0.0136]
+  ligue : Bundesliga                                       1575 matchs | ouverture 0.9753 clôture 0.9726 | écart +0.0027 [-0.0005 ; +0.0061]
+  ligue : EPL                                              1960 matchs | ouverture 0.9619 clôture 0.9583 | écart +0.0037 [+0.0008 ; +0.0065]
+  ligue : La_liga                                          1978 matchs | ouverture 0.9635 clôture 0.9620 | écart +0.0015 [-0.0014 ; +0.0043]
+  ligue : Ligue_1                                          1729 matchs | ouverture 0.9826 clôture 0.9823 | écart +0.0002 [-0.0032 ; +0.0036]
+  ligue : Serie_A                                          1958 matchs | ouverture 0.9688 clôture 0.9663 | écart +0.0025 [-0.0005 ; +0.0053]
+
+  Bookmaker isolé (ouverture, écart > 5 %) par segment :
+  début de saison (5 premières journées)                        30 paris | ROI -16.2% [-66.6% ; +41.7%] | CLV +18.9% [+13.4% ; +25.2%]
+  reste de la saison                                           139 paris | ROI  +2.1% [-28.4% ; +35.1%] | CLV +8.3% [+5.6% ; +11.7%]
+  match avec un promu (moins de 10 matchs dans la ligue)        22 paris (trop peu)
+  fin de saison, une équipe sans enjeu                           6 paris (trop peu)
+  ligue : Bundesliga                                            17 paris (trop peu)
+  ligue : EPL                                                   36 paris | ROI  +7.6% [-41.0% ; +62.4%] | CLV +11.5% [+6.7% ; +16.6%]
+  ligue : La_liga                                               42 paris | ROI +16.0% [-40.8% ; +78.0%] | CLV +11.1% [+7.9% ; +14.5%]
+  ligue : Ligue_1                                               18 paris (trop peu)
+  ligue : Serie_A                                               56 paris | ROI -44.4% [-81.7% ; +3.2%] | CLV +11.0% [+5.3% ; +18.2%]
+
+== E. Modèle sans compositions + bookmaker isolé (évaluation juillet 2024 → octobre 2026) ==
+  bookmaker isolé seul, écart > 3% (même période)               97 paris | ROI  -3.7% [-32.5% ; +27.0%] | CLV +9.7% [+5.9% ; +14.3%]
+  modèle seul, avantage > 3%                                  4243 paris | ROI  -2.9% [-8.3% ; +2.6%] | CLV -1.9% [-2.2% ; -1.6%]
+  les deux d'accord, > 3%                                       49 paris | ROI  -6.3% [-45.9% ; +38.1%] | CLV +16.3% [+9.9% ; +24.7%]
+  bookmaker isolé seul, écart > 5% (même période)               43 paris | ROI +14.1% [-35.0% ; +67.4%] | CLV +18.5% [+11.4% ; +27.6%]
+  modèle seul, avantage > 5%                                  3573 paris | ROI  -5.0% [-11.1% ; +1.6%] | CLV -2.0% [-2.3% ; -1.6%]
+  les deux d'accord, > 5%                                       24 paris (trop peu)
+  bookmaker isolé seul, écart > 8% (même période)               21 paris (trop peu)
+  modèle seul, avantage > 8%                                  2766 paris | ROI  -3.5% [-11.3% ; +3.9%] | CLV -2.2% [-2.6% ; -1.7%]
+  les deux d'accord, > 8%                                       15 paris (trop peu)

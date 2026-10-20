@@ -1,0 +1,56 @@
+Mélanges appris sur la période de tuning (jamais sur l'évaluation) :
+  sans compositions + ouverture : 0.01·log(modèle) + 1.02·log(marché)
+  avec compositions + clôture   : 0.09·log(modèle) + 0.95·log(marché)
+
+== Évaluation glissante : 3799 matchs, juillet 2024 → octobre 2026 ==
+(réentraînement tous les 2 mois sur le seul passé ; aucun réglage choisi sur cette période)
+
+                                                               log-loss   Brier
+Base (fréquences)                                                1.0740  0.6500
+Dixon-Coles (buts seuls)                                         0.9923  0.5913
+LightGBM sans compositions                                       0.9785  0.5825
+LightGBM sans compositions + cotes d'ouverture en variables      0.9709  0.5774
+LightGBM avec compositions                                       0.9774  0.5819
+LightGBM avec compositions + cotes d'ouverture en variables      0.9710  0.5775
+Mélange sans compositions + marché d'ouverture                   0.9697  0.5770
+Mélange avec compositions + marché de clôture                    0.9675  0.5755
+Bookmakers (ouverture)                                           0.9698  0.5770
+Bookmakers (clôture)                                             0.9677  0.5756
+
+== Comparaisons équitables (écart de log-loss, négatif = mieux que le marché, IC 95 %) ==
+Sans compositions, face aux cotes d'ouverture :
+  LightGBM seul                                              +0.0088 [+0.0039 ; +0.0138]  → moins bon que le marché
+  LightGBM + cotes en variables                              +0.0012 [-0.0020 ; +0.0044]  → pas de différence significative
+  mélange modèle + marché                                    -0.0000 [-0.0005 ; +0.0004]  → pas de différence significative
+Avec compositions, face aux cotes de clôture :
+  LightGBM seul                                              +0.0097 [+0.0048 ; +0.0144]  → moins bon que le marché
+  mélange modèle + marché                                    -0.0002 [-0.0008 ; +0.0004]  → pas de différence significative
+Apport des compositions (LightGBM avec − sans) :
+  LightGBM avec vs sans compositions                         -0.0012 [-0.0030 ; +0.0007]  → pas de différence significative
+
+== Paris simulés, 1 € par pari (ROI et CLV avec IC 95 %) ==
+CLV = cote obtenue / cote « juste » de clôture − 1. Une CLV moyenne > 0 est le meilleur signe d'un vrai avantage.
+LightGBM sans compositions                     | ouverture, cote moyenne   | seuil  2% |  3104 paris | ROI  -8.1% [-14.4% ; -2.0%] | CLV -7.4% [-7.8% ; -7.1%]
+LightGBM sans compositions                     | ouverture, cote moyenne   | seuil  5% |  2366 paris | ROI -10.5% [-17.5% ; -3.4%] | CLV -8.0% [-8.4% ; -7.6%]
+LightGBM sans compositions                     | ouverture, cote moyenne   | seuil 10% |  1541 paris | ROI -10.9% [-20.2% ; -1.4%] | CLV -8.7% [-9.2% ; -8.1%]
+LightGBM sans compositions                     | ouverture, meilleure cote | seuil  2% |  4616 paris | ROI  -2.8% [-8.2% ; +2.7%] | CLV -1.9% [-2.2% ; -1.7%]
+LightGBM sans compositions                     | ouverture, meilleure cote | seuil  5% |  3573 paris | ROI  -5.0% [-11.1% ; +1.1%] | CLV -2.0% [-2.3% ; -1.6%]
+LightGBM sans compositions                     | ouverture, meilleure cote | seuil 10% |  2343 paris | ROI  -5.6% [-13.8% ; +2.6%] | CLV -2.3% [-2.8% ; -1.8%]
+Mélange sans compositions + marché d'ouverture | ouverture, meilleure cote | seuil  2% |   491 paris | ROI  +6.3% [-2.0% ; +14.8%] | CLV +3.0% [+2.1% ; +4.0%]
+Mélange sans compositions + marché d'ouverture | ouverture, meilleure cote | seuil  5% |    43 paris | ROI +40.0% [-8.3% ; +93.3%] | CLV +17.3% [+10.0% ; +26.7%]
+LightGBM avec compositions                     | clôture, cote moyenne     | seuil  2% |  3177 paris | ROI -11.0% [-17.2% ; -4.8%]
+LightGBM avec compositions                     | clôture, cote moyenne     | seuil  5% |  2482 paris | ROI -10.3% [-17.0% ; -3.4%]
+LightGBM avec compositions                     | clôture, cote moyenne     | seuil 10% |  1653 paris | ROI  -9.6% [-18.6% ; +0.0%]
+LightGBM avec compositions                     | clôture, meilleure cote   | seuil  2% |  4586 paris | ROI  -2.7% [-8.3% ; +2.9%]
+LightGBM avec compositions                     | clôture, meilleure cote   | seuil  5% |  3660 paris | ROI  -4.6% [-10.7% ; +1.6%]
+LightGBM avec compositions                     | clôture, meilleure cote   | seuil 10% |  2505 paris | ROI  -3.8% [-11.4% ; +4.8%]
+Mélange avec compositions + marché de clôture  | clôture, meilleure cote   | seuil  2% |  1358 paris | ROI  +4.6% [-1.6% ; +10.8%]
+Mélange avec compositions + marché de clôture  | clôture, meilleure cote   | seuil  5% |   199 paris | ROI +12.0% [-7.5% ; +32.6%]
+Mélange avec compositions + marché de clôture  | clôture, meilleure cote   | seuil 10% |    31 paris | ROI +50.3% [-16.6% ; +125.8%]
+
+== Par championnat : LightGBM sans compositions − bookmakers d'ouverture ==
+  Bundesliga     657 matchs : +0.0071 [-0.0058 ; +0.0198]
+  EPL            820 matchs : -0.0015 [-0.0121 ; +0.0091]
+  La_liga        838 matchs : +0.0191 [+0.0075 ; +0.0306]
+  Ligue_1        664 matchs : +0.0069 [-0.0036 ; +0.0179]
+  Serie_A        820 matchs : +0.0113 [+0.0019 ; +0.0204]

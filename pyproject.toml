@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "footpred"
+version = "1.0.0"
+description = "Leakage-audited football match forecasting benchmarked against betting markets (Big-5 European leagues, 2021-2026)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy", "scipy", "pandas", "pyarrow", "lightgbm", "beautifulsoup4", "lxml", "matplotlib"]
+
+[project.optional-dependencies]
+nn = ["torch"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["footpred*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

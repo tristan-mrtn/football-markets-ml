@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this code or its findings, please cite it as below."
+title: "Can public football data beat the betting market? A leakage-audited walk-forward study on the Big-5 European leagues (2021-2026)"
+authors:
+  - alias: "tristan-mrtn"
+version: 1.0.0
+date-released: 2026-10-20
+license: MIT
+repository-code: "https://github.com/tristan-mrtn/football-markets-ml"
+keywords: [football, sports forecasting, betting markets, market efficiency, LightGBM, data leakage, walk-forward validation]
