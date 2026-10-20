@@ -24,7 +24,7 @@ The more interesting answers are in *why*, and in the pitfalls found on the way.
 | **It adds nothing to the market** | blend weights learned on the tuning period: **0.06** for the model vs 0.98 for the odds; the blend ties the market (−0.0002, 95 % CI [−0.0007, +0.0003]) |
 | **No betting edge** | the model alone has negative closing-line value (−2 % to −9 %) and negative returns at every threshold |
 | **Line-ups barely matter** | knowing the starting XI improves log-loss by only 0.001 (not significant) |
-| **What carries signal** | tactics / style (formations, pressing, set pieces), context (stakes, European fixtures, managerial changes), game-state xG, line-up attacking quality, squad chemistry |
+| **What carries signal** | only **match context** (stakes, European fixtures, rest, managerial changes, squad age) helps significantly on its own (+0.007 log-loss); tactics, line-up attack, chemistry, defence and match stats add ~0.002 each but overlap; form, head-to-head, luck, availability and game-state xG add nothing |
 | **Market biases** | a clear **favourite-longshot bias**: outcomes priced under 10 % happen 6 % of the time (−24 % return), favourites lose only 1–3 % |
 | **Methodological trap** | measuring closing-line value with proportional de-vigging shows a spurious **+10.7 %** edge; the power method gives **−0.4 %** |
 
@@ -74,7 +74,9 @@ It is the first thing a forward paper-trading test should check.
 ### What kinds of statistics matter?
 
 Each family is added to team strength alone (blue) or removed from the full model (orange),
-inside the walk-forward protocol on the tuning period only.
+inside the walk-forward protocol on the tuning period only. All 220 features together improve on
+team strength alone by 0.006 (0.988 → 0.982), but only the context family carries information that
+no other family already provides.
 
 <p align="center"><img src="docs/figures/feature_families.png" width="820"></p>
 

@@ -8,6 +8,7 @@ Palette validated for colour-vision deficiency (blue #2a78d6 / orange #eb6834).
 import os
 
 import matplotlib
+import matplotlib.ticker
 import pandas as pd
 
 matplotlib.use("Agg")
@@ -22,7 +23,7 @@ plt.rcParams.update({
     "axes.edgecolor": GRID, "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK,
     "text.color": INK, "font.size": 10.5, "axes.spines.top": False, "axes.spines.right": False,
     "axes.spines.left": False, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.8,
-    "axes.axisbelow": True, "axes.titlesize": 12.5, "axes.titleweight": "semibold",
+    "axes.axisbelow": True, "axes.titlesize": 12.5, "axes.titleweight": "bold",
     "axes.titlelocation": "left", "axes.titlepad": 12,
 })
 
@@ -53,20 +54,22 @@ LABELS = {
 }
 c = cmp_[[(r.model, r.reference) in LABELS for r in cmp_.itertuples()]].iloc[::-1]
 labels = [LABELS[(r.model, r.reference)] for r in c.itertuples()]
-fig, ax = plt.subplots(figsize=(8.6, 3.6))
+fig, ax = plt.subplots(figsize=(9.6, 3.9))
 ax.axvline(0, color=INK2, linewidth=1.2, zorder=1)
 ys = dot_ci(ax, labels, c["diff"], c["lo"], c["hi"], BLUE)
 ax.set_yticks(ys, labels)
-ax.set_xlabel("Log-loss difference with the bookmakers (95 % CI)  ·  < 0 = better than the market")
-ax.text(0, len(labels) - 0.35, " market", color=INK2, va="bottom", fontsize=9.5)
-ax.set_title("No model beats the market it is fairly compared with  (3,799 matches, Jul 2024 – Oct 2026)")
+ax.set_xlabel("Log-loss − bookmakers' log-loss (95 % CI)   ·   < 0 : better than the market")
+ax.set_ylim(-0.6, len(labels) - 0.4)
+ax.text(0, -0.55, "  market", color=INK2, va="bottom", fontsize=9.5)
+fig.suptitle("Gap to the betting market  ·  3,799 matches, Jul 2024 – Oct 2026", x=0.015, ha="left",
+             fontsize=12.5, fontweight="bold")
 ax.grid(axis="y", visible=False)
 save(fig, "market_gap.png")
 
 # ---------------------------------------------------------------- 2. feature families
 ab = pd.read_csv(f"{RES}/ablation_families.csv").sort_values("gain_add")
 fam = [f[2:] for f in ab.family]
-fig, ax = plt.subplots(figsize=(8.6, 4.6))
+fig, ax = plt.subplots(figsize=(9.6, 4.8))
 ax.axvline(0, color=INK2, linewidth=1.2, zorder=1)
 dot_ci(ax, fam, ab.gain_add, ab.gain_add_lo, ab.gain_add_hi, BLUE, offset=0.15,
        label="added to team strength alone")
@@ -74,7 +77,8 @@ ys = dot_ci(ax, fam, ab.gain_unique, ab.gain_unique_lo, ab.gain_unique_hi, ORANG
             label="removed from the full model (unique information)")
 ax.set_yticks(range(len(fam)), fam)
 ax.set_xlabel("Log-loss improvement (95 % CI)  ·  > 0 = the family helps")
-ax.set_title("Which kinds of football statistics carry predictive signal?  (tuning period, 2,819 matches)")
+fig.suptitle("What carries signal?  ·  each feature family, tuning period (2,819 matches)", x=0.015, ha="left",
+             fontsize=12.5, fontweight="bold")
 ax.legend(loc="lower right", frameon=False, fontsize=9.5)
 ax.grid(axis="y", visible=False)
 save(fig, "feature_families.png")
@@ -82,19 +86,20 @@ save(fig, "feature_families.png")
 # ---------------------------------------------------------------- 3. favourite-longshot bias
 ms = pd.read_csv(f"{RES}/market_study.csv")
 b = ms[ms["stratégie"].str.startswith("B tranche")].copy()
-fig, ax = plt.subplots(figsize=(5.6, 5.0))
-ax.plot([0, 0.9], [0, 0.9], color=NEUTRAL, linewidth=1.2, linestyle=(0, (4, 3)), zorder=1)
-ax.text(0.62, 0.66, "perfect calibration", color=INK2, rotation=41, fontsize=9)
-ax.plot(b.proba, b.freq, color=BLUE, linewidth=2, zorder=2)
-ax.scatter(b.proba, b.freq, s=56, color=BLUE, edgecolor=SURFACE, linewidth=2, zorder=3)
-for r in b.itertuples():
-    if r.proba < 0.2 or r.proba > 0.6:
-        ax.annotate(f"ROI {r.roi:+.0%}", (r.proba, r.freq), textcoords="offset points",
-                    xytext=(8, -12), fontsize=9, color=INK2)
-ax.set_xlabel("Probability implied by closing odds (proportional de-vig)")
-ax.set_ylabel("Observed frequency")
-ax.set_title("Favourite-longshot bias  (9,200 matches)")
-ax.set_xlim(0, 0.9); ax.set_ylim(0, 0.9)
+b["label"] = b["stratégie"].str.replace("B tranche ", "", regex=False).str.replace("-", "–")
+fig, ax = plt.subplots(figsize=(7.2, 4.0))
+ax.axhline(0, color=INK2, linewidth=1.2, zorder=1)
+x = range(len(b))
+ax.vlines(x, b.roi_bas, b.roi_haut, color=BLUE, linewidth=2.2, zorder=2)
+ax.scatter(x, b.roi, s=64, color=BLUE, edgecolor=SURFACE, linewidth=2, zorder=3)
+for i, r in zip(x, b.itertuples()):
+    ax.annotate(f"{r.roi:+.0%}", (i, r.roi), textcoords="offset points", xytext=(9, -4), fontsize=9, color=INK2)
+ax.set_xticks(list(x), list(b.label))
+ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
+ax.set_xlabel("Probability implied by closing odds")
+ax.set_ylabel("Return of betting every outcome")
+ax.set_title("Favourite-longshot bias  ·  9,200 matches, 2021 – 2026")
+ax.grid(axis="x", visible=False)
 save(fig, "favourite_longshot.png")
 
 # ---------------------------------------------------------------- 4. by league

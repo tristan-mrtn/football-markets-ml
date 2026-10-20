@@ -90,6 +90,24 @@ for when, cons, best in (("ouverture", P_open, ODDS["meilleure ouverture"]),
         bet = cons * best - 1 > edge
         report(f"{when}, écart > {edge:.0%}", bet, best, clv=(when == "ouverture"))
 
+# ------------------------------------------------------------------ A bis
+say("\n== A bis. Piège de mesure : la CLV dépend de la façon de retirer la marge ==")
+say("Mêmes paris (sélection au consensus PRORATA, meilleure cote d'ouverture, écart > 5 %), CLV mesurée de deux façons :")
+_io = 1 / m[OPEN].to_numpy(float); _po = _io / _io.sum(1, keepdims=True)
+_ic = 1 / m[CLOSE].to_numpy(float); _pc_prop = _ic / _ic.sum(1, keepdims=True)
+_best = ODDS["meilleure ouverture"]
+_bet = _po * _best - 1 > 0.05
+_gain = np.where(WIN, _best - 1, -1)[_bet]
+for lab, pc in (("retrait au prorata", _pc_prop), ("méthode de la puissance", P_close)):
+    c = (_best * pc - 1)[_bet]
+    lo, hi = ci(c)
+    say(f"  CLV ({lab:24}) : {c.mean():+.1%} [{lo:+.1%} ; {hi:+.1%}]")
+    rows.append({"stratégie": f"Abis CLV {lab}", "paris": int(_bet.sum()), "clv": c.mean(), "clv_bas": lo, "clv_haut": hi})
+lo, hi = ci(_gain)
+say(f"  rendement réel sur ces {int(_bet.sum())} paris : {_gain.mean():+.1%} [{lo:+.1%} ; {hi:+.1%}]")
+say(f"  sur ces paris : fréquence de gain {WIN[_bet].mean():.1%}, proba de clôture prorata {_pc_prop[_bet].mean():.1%}, "
+    f"puissance {P_close[_bet].mean():.1%}")
+
 # ------------------------------------------------------------------ B
 say("\n== B. Biais favori-outsider (cotes de clôture, marge retirée au PRORATA pour montrer le biais brut) ==")
 say("  tranche de proba   issues   fréquence réelle   proba annoncée   ROI à la cote moyenne")

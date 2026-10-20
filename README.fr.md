@@ -24,7 +24,7 @@ les pièges rencontrés en chemin.
 | **Il n'apporte rien au marché** | poids appris sur la période de réglage : **0,06** pour le modèle contre 0,98 pour les cotes ; le mélange égale le marché (−0,0002, IC 95 % [−0,0007 ; +0,0003]) |
 | **Pas d'avantage pour parier** | le modèle seul a une valeur de clôture (CLV) négative (−2 % à −9 %) et des rendements négatifs à tous les seuils |
 | **Les compositions comptent peu** | connaître le onze de départ n'améliore la log-loss que de 0,001 (non significatif) |
-| **Ce qui contient du signal** | tactique et style (formations, pressing, coups de pied arrêtés), contexte (enjeu, Coupes d'Europe, changements d'entraîneur), xG à score égal, qualité offensive du onze, automatismes |
+| **Ce qui contient du signal** | seul le **contexte du match** (enjeu, Coupes d'Europe, repos, changement d'entraîneur, âge de l'effectif) aide significativement à lui seul (+0,007 de log-loss) ; tactique, attaque du onze, automatismes, défense et stats de match apportent ~0,002 chacun mais se recoupent ; forme, face-à-face, chance, disponibilité et xG à score égal n'apportent rien |
 | **Biais du marché** | un net **biais favori-outsider** : les issues cotées sous 10 % n'arrivent que 6 % du temps (−24 % de rendement), les favoris ne perdent que 1 à 3 % |
 | **Piège méthodologique** | mesurer la CLV avec un retrait de marge au prorata fait apparaître un faux avantage de **+10,7 %** ; la méthode de la puissance donne **−0,4 %** |
 
@@ -74,6 +74,11 @@ pas modélisée, et le poids du modèle dans le mélange est minime. C'est la pr
 test « à blanc » sur des matchs futurs devra vérifier.
 
 ### Quelles statistiques comptent ?
+
+Chaque famille est ajoutée à la seule force des équipes (bleu) ou retirée du modèle complet
+(orange), dans le protocole glissant, sur la période de réglage uniquement. L'ensemble des 220
+variables améliore la force des équipes seule de 0,006 (0,988 → 0,982), mais seul le contexte
+apporte une information qu'aucune autre famille ne fournit déjà.
 
 <p align="center"><img src="docs/figures/feature_families.png" width="820"></p>
 
